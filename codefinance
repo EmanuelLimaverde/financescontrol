@@ -1,0 +1,135 @@
+#include <stdio.h>
+#include <locale.h>
+
+float historicoReceitas[100];
+float historicoDespesas[100];
+int qtdReceitas = 0;  
+int qtdDespesas = 0; 
+
+void transacoes() {
+    int opcaoTransacao = -1;
+    float valorDigitado;
+    int i; 
+
+    while (opcaoTransacao != 0) {
+        printf("\n=============Transações=============\n");
+        printf("_____MENU_____\n");
+        printf("1. Adicionar Receita\n");
+        printf("2. Registrar Despesa\n");
+        printf("3. Ver Extrato e Saldo Atual\n"); 
+        printf("0. Voltar ao Menu Anterior\n"); 
+        printf("====================================\n");
+        printf("Escolha uma opção: ");
+        
+        scanf("%d", &opcaoTransacao);
+        while (getchar() != '\n'); 
+
+        switch(opcaoTransacao) {
+            case 1:
+                if (qtdReceitas < 100) {
+                    printf("\nQual valor da receita a ser adicionado? R$ ");
+                    scanf("%f", &valorDigitado);
+                    
+                    historicoReceitas[qtdReceitas] = valorDigitado;
+                    qtdReceitas++;
+                    
+                    printf("Receita de R$ %.2f adicionada!\n", valorDigitado);
+                } else {
+                    printf("\nLimite de armazenamento de receitas atingido!\n");
+                }
+                break;
+                
+            case 2:
+                if (qtdDespesas < 100) {
+                    printf("\nQual o valor da despesa? R$ ");
+                    scanf("%f", &valorDigitado);
+                    
+                    historicoDespesas[qtdDespesas] = valorDigitado;
+                    qtdDespesas++;
+                    
+                    printf("Despesa de R$ %.2f registrada!\n", valorDigitado);
+                } else {
+                    printf("\nLimite de armazenamento de despesas atingido!\n");
+                }
+                break;
+
+            case 3:
+                printf("\n=========================================\n");
+                printf("           EXTRATO DETALHADO             \n");
+                printf("=========================================\n");
+                
+                float somaReceitas = 0;
+                float somaDespesas = 0;
+
+                printf("ENTRADAS (RECEITAS):\n");
+                if (qtdReceitas == 0) {
+                    printf("  Nenhuma receita registrada.\n");
+                } else {
+                    for (i = 0; i < qtdReceitas; i++) {
+                        printf("  [+] Item %d: R$ %.2f\n", i + 1, historicoReceitas[i]);
+                        somaReceitas += historicoReceitas[i]; 
+                    }
+                }
+
+                printf("\n-----------------------------------------\n");
+
+                printf("SAÍDAS (DESPESAS):\n");
+                if (qtdDespesas == 0) {
+                    printf("  Nenhuma despesa registrada.\n");
+                } else {
+                    for (i = 0; i < qtdDespesas; i++) {
+                        printf("  [-] Item %d: R$ %.2f\n", i + 1, historicoDespesas[i]);
+                        somaDespesas += historicoDespesas[i]; 
+                    }
+                }
+
+                printf("=========================================\n");
+                float saldoFinal = somaReceitas - somaDespesas;
+                printf(" TOTAL ENTRADAS: R$ %.2f\n", somaReceitas);
+                printf(" TOTAL SAÍDAS:   R$ %.2f\n", somaDespesas);
+                printf(">>>> SALDO ATUAL: R$ %.2f <<<<\n", saldoFinal);
+                printf("=========================================\n");
+                break;
+
+            case 0:
+                printf("\nVoltando...\n");
+                break;
+
+            default:
+                printf("\nOpção inválida!\n");
+                break;
+        }
+    }
+}
+
+int main() {
+    setlocale(LC_ALL, "Portuguese");
+
+    int opcao = -1;
+    
+    while (opcao != 0) {
+        printf("\n====================================\n");
+        printf("        CONTROLE DE FINANÇAS - MENU     \n");
+        printf("====================================\n");
+        printf("1. Realizar Transações: \n - Receita; \n - Despesa; \n - Saldo.\n");
+        printf("0. Sair do Programa\n");
+        printf("====================================\n");
+        printf("Escolha uma opção: ");
+        
+        scanf("%d", &opcao);
+        while (getchar() != '\n');
+        switch(opcao) {
+            case 1:
+                transacoes();
+                break;
+            case 0:
+                printf("\nSaindo do programa... Até logo!\n");
+                break;
+            default:
+                printf("\n[ERRO] Opção inválida! Tente novamente.\n");
+                break;
+        }
+    }
+    return 0;
+}    
+    
